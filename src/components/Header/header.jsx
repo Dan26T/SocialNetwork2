@@ -3,10 +3,11 @@ import {NavLink} from "react-router-dom";
 
 const Header = (props) => {
     return <header className={s.h}>
-        <img src="https://cdn.worldvectorlogo.com/logos/dallas-mavericks.svg"/>
+        <img src="https://cdn.worldvectorlogo.com/logos/dallas-mavericks.svg" alt='App logo'/>
         <div className={s.loginBlock}> {props.isAuth ?
             <div><div><img src={props.logPhoto != null ? props.logPhoto :
-                'https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg'}/>
+                'https://st.depositphotos.com/2101611/3925/v/600/depositphotos_39258143-stock-illustration-businessman-avatar-profile-picture.jpg'}
+            alt='user photo'/>
                 <NavLink to={`/profile/${props.userId}`}>{props.login}</NavLink></div>
                 <div><button onClick={props.logout}>LogOut</button></div>
             </div>

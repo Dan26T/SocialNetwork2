@@ -1,4 +1,3 @@
-import s from './profileinfo.module.css';
 import React from "react";
 import {Field, reduxForm} from "redux-form";
 

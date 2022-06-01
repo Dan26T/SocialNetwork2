@@ -1,4 +1,6 @@
-import {authApi, followApi, userApi} from "../api/api";
+import {followApi, userApi} from "../api/api";
+import {updateArraytMethod} from "../utilits/objectHelper";
+
 
 const SHOW_MORE = 'SHOW-MORE'
 const FOLLOW = 'FOLLOW'
@@ -21,26 +23,15 @@ let initialState = {
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
         case FOLLOW:
-            debugger
             return {
                 ...state,
-                users: state.users.map(user => {
-                    if (user.id === action.userId) {
-                        return {...user, followed: true}
-                    }
-                    return user;
-                })
+                users: updateArraytMethod(state.users, action.userId, 'id', {followed: true} )
+
             };
         case UNFOLLOW:
-           debugger
             return {
                 ...state,
-                users: state.users.map(user => {
-                    if (user.id === action.userId) {
-                        return {...user, followed: false}
-                    }
-                    return user;
-                })
+                users: updateArraytMethod(state.users, action.userId, 'id', {followed: false} )
             };
         case SHOW_MORE:
             return {
@@ -66,7 +57,7 @@ const usersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 isFollowing: action.isFetching ? [...state.isFollowing, action.userId]
-                    : state.isFollowing.filter(id => id != action.userId)
+                    : state.isFollowing.filter(id => id !== action.userId)
             }
         default:
             return state;
@@ -82,7 +73,7 @@ export const showLoader = (isFetching) => ({type: TOGGLE_IS_FETCHING, isFetching
 export const followingProgress = (isFetching, userId) => ({type: TOGGLE_FOLLOWING_PROGRESS, userId, isFetching})
 
 
-export const getUsers =(activePage, pageSize ) =>{
+export const getUsers = (activePage, pageSize ) => {
     return async (dispatch) => {
         dispatch(showLoader(true))
         dispatch(setActivePage(activePage))
@@ -92,24 +83,26 @@ export const getUsers =(activePage, pageSize ) =>{
             dispatch(setTotalCount(response.totalCount))
     }
 }
-export const follow =(userId ) =>{
+
+let followUnfollowFlow = async (dispatch, userId, apiMethod, actionCreator) => {
+    dispatch(followingProgress(true, userId))
+    let response = await apiMethod(userId)
+    if (response.data.resultCode === 0) {
+        dispatch(actionCreator(userId))
+    }
+    dispatch(followingProgress(false, userId))
+}
+
+export const follow =(userId ) => {
     return async (dispatch) => {
-        dispatch(followingProgress(true, userId))
-        let response = await followApi.postFollow(userId)
-            if (response.data.resultCode === 0) {
-                dispatch(followSuccess(userId))
-            }
-            dispatch(followingProgress(false, userId))
+        followUnfollowFlow(dispatch, userId,
+            followApi.postFollow.bind(followApi), followSuccess)
     }
 }
 export const unfollow =(userId ) =>{
     return async (dispatch) => {
-        dispatch(followingProgress(true, userId))
-        let response = await  followApi.deleteFollow(userId)
-            if (response.data.resultCode === 0) {
-                dispatch(unfollowSuccess(userId))
-            }
-            dispatch(followingProgress(false, userId))
+        followUnfollowFlow(dispatch, userId,
+            followApi.deleteFollow.bind(followApi), unfollowSuccess)
     }
 }
 

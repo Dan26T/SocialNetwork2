@@ -1,6 +1,6 @@
 import React from "react";
-import {Field, reduxForm} from "redux-form";
-import {Input} from '../common/FieldControl/FieldControl'
+import {reduxForm} from "redux-form";
+import {createField, Input} from '../common/FieldControl/FieldControl'
 import {maxLengthCreator, required} from "../../utilits/validation/validation";
 import {connect} from 'react-redux';
 import {logIn} from "../../redux/authReducer";
@@ -23,21 +23,15 @@ const Login = (props) => {
     </div>
 }
 const maxLength50 = maxLengthCreator(50)
-const LoginForm = (props) => {
+const LoginForm = ({handleSubmit, error, capchaId}) => {
     debugger;
-    return <form onSubmit={props.handleSubmit}>
-        <div>
-            <Field component={Input} validate={[required, maxLength50]} name={'email'} placeholder={"Email"}/>
-        </div>
-        <div>
-            <Field component={Input} validate={[required, maxLength50]} name={'password'} type={'password'} placeholder={"Password"}/>
-        </div>
-        <div>
-            <Field component={Input} name={'remember'} type={'checkbox'}/> remember me
-        </div>
-        { props.error && <div className={style.formSummaryError}>{props.error}</div>}
-        { props.error == "Incorrect anti-bot symbols" && <div className={style.formCapchaError}>
-            <div><img src={props.capchaId} /></div>
+    return <form onSubmit={handleSubmit}>
+            {createField(Input,[required, maxLength50], 'email', "Email" )}
+            {createField(Input,[required, maxLength50], 'password', "Password", {type: 'password'} )}
+            {createField(Input,[], 'remember', "", {type: 'checkbox'}, 'Remember me' )}
+        { error && <div className={style.formSummaryError}>{error}</div>}
+        { error === "Incorrect anti-bot symbols" && <div className={style.formCapchaError}>
+            <div><img src={capchaId} alt='capcha' /></div>
             <div>
                 "Field component={Input} validate={[required, maxLength50]} name={'capcha'} placeholder={"Enter Capcha"}"
             </div>

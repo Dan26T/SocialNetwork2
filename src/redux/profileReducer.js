@@ -1,4 +1,4 @@
-import {authApi, profileApi, userApi} from "../api/api";
+import {profileApi, userApi} from "../api/api";
 
 const ADD_POST = 'profile/ADD-POST'
 //const UPDATE_NEW_POST_TEXT = 'profile/UPDATE-NEW-POST-TEXT'
@@ -20,7 +20,6 @@ let initialState = {
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_POST:
-            let newPost = state.newPostText
             return {
                 ...state,
                 posts: [...state.posts, {id: 6, message: action.newPostText}]

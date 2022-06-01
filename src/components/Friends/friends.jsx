@@ -1,6 +1,4 @@
-import s from './friends.module.css';
 import Friend from './FriendItem/friends';
-import React from 'react';
 
 const Friends = (props) => {
     debugger

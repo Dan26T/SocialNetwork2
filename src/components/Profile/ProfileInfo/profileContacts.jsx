@@ -2,16 +2,7 @@ import React from "react";
 
 
 const Contacts = (props) => {
-    let contacts = props.contacts
-    let b = []
-    for (let key in contacts) {
-        b.push(`${key} :  ${contacts[key]} ;
-     `)
-    }
-    let m = b.map(e => <div>
-        <span>{e.facebook},  </span>
 
-    </div>)
     return <div>
         <div>
             <span>Facebook: {props.contacts.facebook != null ? props.contacts.facebook : "No;"}</span>
