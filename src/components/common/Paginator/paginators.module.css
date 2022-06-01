@@ -1,0 +1,38 @@
+.pages{
+  padding-top: 10px;
+  height: 50px;
+  width: 100%;
+}
+.pagesStart{
+  padding-left: 70px;
+}
+
+.page {
+  display: inline-block;
+  margin: 5px;
+  padding: 3px;
+  cursor: pointer;
+  border: 1px solid black
+}
+.active {
+  font-weight: bold;
+  color: #cb0a0a;
+  border: 2px solid black;
+}
+
+.btn{
+  padding: 3px;
+  display: inline-block;
+  height: 30px;
+  width: 70px;
+  border-radius: 10px;
+  background-color: coral;
+  color: #ffffff;
+  text-align: center;
+  align-items: center;
+}
+.btn:hover{
+  opacity: 0.8;
+  cursor: pointer;
+
+}
